@@ -31,24 +31,27 @@ class GooglePlaceAutoCompleteTextField extends StatefulWidget {
   bool showError;
   double? containerHorizontalPadding;
   double? containerVerticalPadding;
+  String proxyURL;
 
-  GooglePlaceAutoCompleteTextField(
-      {required this.textEditingController,
-      required this.googleAPIKey,
-      this.debounceTime: 600,
-      this.inputDecoration: const InputDecoration(),
-      this.itemClick,
-      this.isLatLngRequired = true,
-      this.textStyle: const TextStyle(),
-      this.countries,
-      this.getPlaceDetailWithLatLng,
-      this.itemBuilder,
-      this.boxDecoration,
-      this.isCrossBtnShown = true,
-      this.seperatedBuilder,
-      this.showError = true,
-      this.containerHorizontalPadding,
-      this.containerVerticalPadding});
+  GooglePlaceAutoCompleteTextField({
+    required this.textEditingController,
+    required this.googleAPIKey,
+    this.debounceTime: 600,
+    this.inputDecoration: const InputDecoration(),
+    this.itemClick,
+    this.isLatLngRequired = true,
+    this.textStyle: const TextStyle(),
+    this.countries,
+    this.getPlaceDetailWithLatLng,
+    this.itemBuilder,
+    this.boxDecoration,
+    this.isCrossBtnShown = true,
+    this.seperatedBuilder,
+    this.showError = true,
+    this.containerHorizontalPadding,
+    this.containerVerticalPadding,
+    this.proxyURL = "https://cors-anywhere.herokuapp.com/",
+  });
 
   @override
   _GooglePlaceAutoCompleteTextFieldState createState() =>
@@ -116,8 +119,7 @@ class _GooglePlaceAutoCompleteTextFieldState
   getLocation(String text) async {
     String apiURL =
         "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$text&key=${widget.googleAPIKey}";
-    String proxyURL = "https://cors-anywhere.herokuapp.com/";
-    String url = kIsWeb ? proxyURL + apiURL : apiURL;
+    String url = kIsWeb ? widget.proxyURL + apiURL : apiURL;
 
     /// Add the custom header to the options
     final options = kIsWeb
@@ -252,8 +254,7 @@ class _GooglePlaceAutoCompleteTextFieldState
 
     String apiURL =
         "https://maps.googleapis.com/maps/api/place/details/json?placeid=${prediction.placeId}&key=${widget.googleAPIKey}";
-    String proxyURL = "https://cors-anywhere.herokuapp.com/";
-    String url = kIsWeb ? proxyURL + apiURL : apiURL;
+    String url = kIsWeb ? widget.proxyURL + apiURL : apiURL;
 
     /// Add the custom header to the options
     final options = kIsWeb
